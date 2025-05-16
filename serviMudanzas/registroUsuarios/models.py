@@ -32,7 +32,7 @@ class ChoferParticular(models.Model):
     usuario = models.OneToOneField(Usuario, on_delete=models.CASCADE, primary_key=True)
     dni = models.CharField(max_length=20)
     licencia = models.CharField(max_length=50)
-    #vehiculo = models.OneToOneField('Vehiculo', on_delete=models.SET_NULL, null=True, unique=True)
+    vehiculo = models.OneToOneField('Vehiculo', on_delete=models.SET_NULL, null=True, unique=True)
     seguro_url = models.CharField(max_length=255, null=True, blank=True)
     aprobado = models.BooleanField(default=False)
 
@@ -42,3 +42,10 @@ class ChoferEmpresa(models.Model):
     razon_social = models.CharField(max_length=100)
     seguro_url = models.CharField(max_length=255, null=True, blank=True)
     aprobado = models.BooleanField(default=False)
+
+class Vehiculo(models.Model):
+    tipo = models.CharField(max_length=50)
+    patente = models.CharField(max_length=20, unique=True)
+    capacidad_kg = models.FloatField()
+    tiene_acoplado = models.BooleanField(default=False)
+    notas = models.TextField(null=True, blank=True)

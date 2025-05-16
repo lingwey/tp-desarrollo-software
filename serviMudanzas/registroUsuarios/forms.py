@@ -1,5 +1,6 @@
 from django import forms
 from .models import Usuario, Cliente, ChoferParticular, ChoferEmpresa
+from django.contrib.auth.forms import AuthenticationForm
 
 class UsuarioForm(forms.ModelForm):
     # Para ocultar la contraseñas
@@ -22,3 +23,8 @@ class ChoferEmpresaForm(forms.ModelForm):
     class Meta:
         model = ChoferEmpresa
         fields = ['cuit', 'razon_social', 'seguro_url', 'aprobado']
+
+#apartado para el log in mediante el uso del email y el password
+class EmailLoginForm(AuthenticationForm):
+    username = forms.EmailField(label="Correo electrónico")
+    password = forms.CharField(widget=forms.PasswordInput(), label="Contraseña")
