@@ -8,8 +8,8 @@
     <h1>login</h1>
     <p>ingrese su email y contraseña</p>
     <form method="post">
-        {{form.as_p}}
         {%csrf_token%}
+        {{form.as_p}}
         <p><input type="submit" value="log-in"></p>
     </form>
 {% endblock  %}

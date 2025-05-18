@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+
+{% block title %}Registro de Usuario{% endblock %}
+
+{% block content %}
+    <h1>Registro</h1>
+    <p>Complete el formulario para crear una cuenta.</p>
+
+    <form method="post">
+        {% csrf_token %}
+
+        <h2>Información de usuario</h2>
+        {{ form.as_p }}  <!-- Esto ya incluye 'tipo_usuario' automáticamente -->
+
+        <!-- Secciones dinámicas según el tipo de usuario -->
+        <div id="cliente-form" style="display: none;">
+            <h3>Datos de Cliente</h3>
+            {{ cliente_form.as_p }}
+        </div>
+
+        <div id="chofer-particular-form" style="display: none;">
+            <h3>Datos de Chofer Particular</h3>
+            {{ chofer_form.as_p }}
+        </div>
+
+        <div id="chofer-empresa-form" style="display: none;">
+            <h3>Datos de Chofer Empresa</h3>
+            {{ empresa_form.as_p }}
+        </div>
+
+        <button type="submit">Registrarse</button>
+    </form>
+
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var tipoUsuarioSelect = document.querySelector("[name='tipo_usuario']");
+            var clienteForm = document.getElementById("cliente-form");
+            var choferParticularForm = document.getElementById("chofer-particular-form");
+            var choferEmpresaForm = document.getElementById("chofer-empresa-form");
+
+            function mostrarFormulario() {
+                var tipoUsuario = tipoUsuarioSelect.value;
+
+                // Ocultar y desactivar todos los formularios
+                [clienteForm, choferParticularForm, choferEmpresaForm].forEach(function(form) {
+                    form.style.display = "none";
+                    form.querySelectorAll("input, select").forEach(function(input) {
+                        input.required = false; // Desactivar campo requerido si está oculto
+                    });
+                });
+
+                // Activar solo el formulario correspondiente
+                if (tipoUsuario === "cliente") {
+                    clienteForm.style.display = "block";
+                    clienteForm.querySelectorAll("input, select").forEach(input => input.required = true);
+                } else if (tipoUsuario === "chofer_particular") {
+                    choferParticularForm.style.display = "block";
+                    choferParticularForm.querySelectorAll("input, select").forEach(input => input.required = true);
+                } else if (tipoUsuario === "chofer_empresa") {
+                    choferEmpresaForm.style.display = "block";
+                    choferEmpresaForm.querySelectorAll("input, select").forEach(input => input.required = true);
+                }
+            }
+
+            tipoUsuarioSelect.addEventListener("change", mostrarFormulario);
+            mostrarFormulario(); // Ejecutar al cargar la página
+        });
+    </script>
+
+
+{% endblock %}
